@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h2>{% block title %}Edit {{ beverage["beverageName"] }}{% endblock %}{% if beverage["beverageYear"] != "" %} ({{ beverage["beverageYear"] }}){% endif %}</h2>
+
+    <form method="post">
+        <label for="location">Location*</label>
+        <br>
+        <select name="location" autofocus>
+            <option value="0">Beverage not stored</option>
+            {% for location in locations %}
+                <option value="{{ location['locationId'] }}"{% if beverage["locationId"] == location["locationId"] %} selected{% endif %}>{{ location["locationName"] }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="name">Name*</label>
+        <br>
+        <input type="text" name="name" value="{{ beverage['beverageName'] }}">
+        <br>
+        <label for="year">Year</label>
+        <br>
+        <input type="number" name="year" placeholder="Production year" value="{{ beverage['beverageYear'] }}">
+        <br>
+        <label for="purchaseDate">Purchase Date</label>
+        <br>
+        <input type="date" name="purchaseDate" value="{{ beverage['beveragePurchaseDate'] }}">
+        <br>
+        <label for="drinkBefore">Drink Before</label>
+        <br>
+        <input type="date" name="drinkBefore" value="{{ beverage['beverageDrinkBefore'] }}">
+        <br>
+        <label for="notes">Notes</label>
+        <br>
+        <textarea name="notes">{{ beverage["beverageNotes"] }}</textarea>
+        <br>
+        <button type="submit">Update</button> <a href="{{ url_for('delete_beverage', id=beverage['beverageId']) }}" title="Delete this beverage permanently" onclick="return confirm('This will permanently delete this beverage. Are you sure?')">Delete</a>
+    </form>
+{% endblock %}

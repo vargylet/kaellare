@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% block title %}<h2>{{ beverage["beverageName"] }}{% if beverage["beverageYear"] != "" %} ({{ beverage["beverageYear"] }}){% endif %}{% endblock %}</h2>
+    
+    <p>
+        <a href="{{ url_for('edit_beverage', id=beverage['beverageId']) }}">Edit</a>
+    </p>
+    <table>
+        <tr>
+            <th>Name</th>
+            <td>{{ beverage["beverageName"] }}</td>
+        </tr>
+        <tr>
+            <th>Year</th>
+            <td>{{ beverage["beverageYear"] }}</td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>{% if beverage["locationId"] != None %}{{ beverage["locationName"] }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Purchase Date</th>
+            <td>{{ beverage["beveragePurchaseDate"] }}</td>
+        </tr>
+        <tr>
+            <th>Drink Before</th>
+            <td>{{ beverage["beverageDrinkBefore"] }}</td>
+        </tr>
+        <tr>
+            <th>Notes</th>
+            <td>{{ beverage["beverageNotes"] }}</td>
+        </tr>
+    </table>
+{% endblock %}

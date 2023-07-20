@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h2>{% block title %}Add a beverage{% endblock %}</h2>
+    
+    <form method="post">
+        <label for="location">Location*</label>
+        <br>
+        <select name="location" autofocus>
+            {% for location in locations %}
+                <option value="{{ location['locationId'] }}">{{ location["locationName"] }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="name">Name*</label>
+        <br>
+        <input type="text" name="name" placeholder="Name of the beverage" value="{{ request.form['name'] }}">
+        <br>
+        <label for="year">Year</label>
+        <br>
+        <input type="number" name="year" placeholder="Production year" value="{{ request.form['year'] }}">
+        <br>
+        <label for="purchaseDate">Purchase Date</label>
+        <br>
+        <input type="date" name="purchaseDate" value="{{ request.form['purchaseDate'] }}">
+        <br>
+        <label for="drinkDate">Drink Before</label>
+        <br>
+        <input type="date" name="drinkBefore" value="{{ request.form['drinkBefore'] }}">
+        <br>
+        <label for="notes">Notes</label>
+        <br>
+        <textarea name="notes"></textarea>
+        <br>
+        <button type="submit">Add</button>
+    </form>
+
+{% endblock %}
