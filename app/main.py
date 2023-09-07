@@ -83,10 +83,6 @@ def get_beverages(rows=("beverageId","beverageName"), join="LEFT JOIN", where=("
 		sqlWhere = ""
 
 	sqlQuery = f"SELECT {sqlRows} FROM beverages {join} locations ON beverageLocationId=locationId{sqlWhere} ORDER BY beverageName ASC"
-	
-	####
-	print(sqlQuery)
-	####
 
 	try:
 		beverages = conn.execute(sqlQuery).fetchall()
@@ -237,5 +233,5 @@ def delete_location(id):
 	finally:
 		return redirect(url_for("locations"))
 	
-#if __name__ == "__main__":
-#	app.run(debug=True,host="0.0.0.0")
+if __name__ == "__main__":
+	app.run(debug=True,host="0.0.0.0")

@@ -3,47 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %} - kaellare</title>
-    <style>
-        nav a {
-            color: #d64161;
-            font-size: 2em;
-            margin-left: 50px;
-            text-decoration: none;
-        }
-
-        th {
-            text-align: left;
-        }
-
-        .error {
-            padding: 20px;
-            margin: 5px;
-            color: #970020;
-            background-color: #ffd5de;
-        }
-
-        .info {
-            padding: 20px;
-            margin: 5px;
-            color: #000000;
-            background-color: #96f2b1;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pico.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="{{ url_for('dashboard') }}">Dashboard</a>
-        <a href="{{ url_for('add_beverage') }}">Add beverage</a>
-        <a href="{{ url_for('locations') }}">Locations</a>
+    <nav class="container-fluid">
+        <ul>
+            <li><h3><a href="{{ url_for('dashboard') }}" class="contrast">kaellare</a></h3></li>
+        </ul>
+        <ul>
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('add_beverage') }}">Add beverage</a></li>
+            <li><a href="{{ url_for('locations') }}">Locations</a></li>
+        </ul>
     </nav>
-    <hr>
-    <div class="content">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% for category, message in messages %}
-                <div class="{{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </div>
+
+    <main class="container">
+        <article class="grid">
+            <div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <p class="notification-{{ category }}">
+                            {{ message }}
+                        </p>
+                    {% endfor %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </div>
+        </article>
+    </main>
 </body>
 </html>
