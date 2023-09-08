@@ -4,6 +4,19 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 
+# Generate secret key 
+secret_key = os.urandom(24).hex()
+env_file_path = ".env"
+
+# Write secret key to dotenv
+try:
+	# open file to write
+	with open(env_file_path, "w") as env_file:
+		env_file.write(f"SECRET_KEY={secret_key}\n")
+except Exception as e:
+	print(f"An error occured when writing to .env file: {e}")
+
+# Load dotenv and secret key
 load_dotenv()
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
