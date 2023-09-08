@@ -1,4 +1,4 @@
-import os, sqlite3
+import os, sqlite3, subprocess
 from flask import Flask, render_template, request, flash, redirect, url_for, abort
 from dotenv import load_dotenv
 
@@ -7,9 +7,15 @@ app = Flask(__name__)
 load_dotenv()
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
+# Creating and configurating the database
+try:
+	subprocess.run(["python3", "init_db.py"], check=True)
+except subprocess.CalledProcessError as e:
+	print(f"Error running init_db.py: {e}")
+
 # sqlite connection
 def get_db_connection():
-	conn = sqlite3.connect("database.db")
+	conn = sqlite3.connect("./data/database.db")
 	conn.row_factory = sqlite3.Row
 	return conn
 

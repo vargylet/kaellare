@@ -1,26 +1,31 @@
-import sqlite3
+import sqlite3, os
 
-connection = sqlite3.connect("database.db")
-connection.row_factory = sqlite3.Row
+# Database filename
+database_file_path = "./data/database.db"
+# Initial database structure
+sql_file_path = "schema.sql"
 
-with open("schema.sql") as f:
-    connection.executescript(f.read())
+if not os.path.isfile(database_file_path):
+    # Database file doesn't exist
+    try:
+        connection = sqlite3.connect(database_file_path)
+        cursor = connection.cursor()
 
-cur = connection.cursor()
+        # Read sql file and execute its content
+        with open(sql_file_path, "r") as sql_file:
+            sql_command = sql_file.read()
+            cursor.executescript(sql_command)
+        
+        # Save to database
+        connection.commit()
 
-cur.execute("INSERT INTO locations (locationName) VALUES (?)",
-            ("Wine cellar",)
-            )
-cur.execute("INSERT INTO locations (locationName) VALUES (?)",
-            ("Kitchen",)
-            )
+        print("Database has been created and SQL commands have been executed.")
 
-location = cur.execute("SELECT locationId FROM locations ORDER BY locationId ASC LIMIT 1").fetchone()
-print(location["locationId"])
+        # Close connection
+        connection.close()
 
-cur.execute("INSERT INTO beverages (beverageName, beverageLocationId, beverageYear, beveragePurchaseDate, beverageDrinkBefore, beverageNotes) VALUES (?, ?, ?, ?, ?, ?)",
-            ("Serralunga d’Alba Fontanafredda", location['locationId'], 2014, "2019-10-22", "2029-01-01", "Barolo, gifted to me.")
-            )
-
-connection.commit()
-connection.close()
+    except sqlite3.Error as e:
+        print("An error occurred", e)
+else:
+    # Database file already exists
+    print("A database already exists. No changes were made.")
