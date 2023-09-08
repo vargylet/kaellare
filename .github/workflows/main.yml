@@ -13,6 +13,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: stable
+
     - name: Login to GitHub Packages
       run: echo ${{ secrets.GH_DOCKER_BUILD_TOKEN }} | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
