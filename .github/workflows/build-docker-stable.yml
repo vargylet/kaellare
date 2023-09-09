@@ -21,12 +21,16 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_DOCKER_BUILD_TOKEN }}
-  
+
+      - name: Get tag name
+        id: get_tag
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+
       - name: Build and push image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.ref#refs/tags/ }}
+            ghcr.io/${{ github.repository }}:${{ steps.get_tag.outputs.tag }}
             ghcr.io/${{ github.repository }}:latest
