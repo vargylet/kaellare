@@ -10,11 +10,7 @@ This project is probably going to evolve quite slowly due to life... :-]
 
 ## Install using Docker
 ```
-# Build container and set <TAG>
-docker build -t kaellare:<TAG> .
-
-# Start it
-docker run -d --name=kaellare -p 3000:3000 -v /path/to/data:/app/data kaellare:<TAG>
+docker run -d --name=kaellare -p 3000:3000 -v /path/to/data:/app/data ghcr.io/vargylet/kaellare:latest
 ```
 
 You can also use docker compose:
@@ -23,7 +19,7 @@ version: "2"
 
 services:
   app:
-    image: kaellare:<TAG>
+    image: ghcr.io/vargylet/kaellare:latest
     container_name: kaellare
     ports:
       - 3000:3000
