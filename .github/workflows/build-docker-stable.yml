@@ -28,5 +28,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.ref }}
+            ghcr.io/${{ github.repository }}:${{ github.ref#refs/tags/ }}
             ghcr.io/${{ github.repository }}:latest
