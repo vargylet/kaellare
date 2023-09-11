@@ -1,7 +1,7 @@
 # kaellare
 
 ## Features
-kaellare is designed to keep track of the beverages you store at home. The main purpose is to manage your wines but the application is not limited to that. Beer, liqour, and other types of beverages are also possible to store.
+kaellare is designed to keep track of the beverages you store at home. The application's main purpose is to manage your wines but it's not limited to that. Beer, liqour, and other types of beverages are also possible to store.
 
 ## Expectations
 I'm a happy hobby programmer and this is my first atempt to properly build something. I'm using kaellare as a project for me to learn new techniques. With that said, there are probably better ways to solve things than I've come up with. Feel free to share your experiences by creating an issue or a pull request.
