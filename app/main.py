@@ -253,4 +253,4 @@ def delete_location(id):
 		return redirect(url_for("locations"))
 	
 if __name__ == "__main__":
-	app.run(debug=True,host="0.0.0.0")
+	app.run()
