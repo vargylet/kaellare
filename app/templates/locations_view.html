@@ -20,13 +20,13 @@
         </tr>
         {% for location in locations %}
             <tr>
-                <form method="post" action="{{ url_for('edit_location', id=location['locationId']) }}">
+                <form method="post" action="{{ url_for('edit_location', location_id=location['locationId']) }}">
                     <td>
                         <input type="text" name="name" value="{{ location['locationName'] }}">
                         <input type="hidden" name="id" value="{{ location['locationId'] }}">
                     </td>
                     <td>
-                        <button type="submit" class="slim-button">Update</button> <a href="{{ url_for('delete_location', id=location['locationId']) }}" data-tooltip="Permanently delete this location" data-placement="right" onclick="return confirm('This will permanently delete the location. Are you sure?')">Delete
+                        <button type="submit" class="slim-button">Update</button> <a href="{{ url_for('delete_location', location_id=location['locationId']) }}" data-tooltip="Permanently delete this location" data-placement="right" onclick="return confirm('This will permanently delete the location. Are you sure?')">Delete
                     </td>
                 </form>
             </tr>
