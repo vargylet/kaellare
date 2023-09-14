@@ -10,28 +10,6 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# Generate secret key
-secret_key = os.urandom(24).hex()
-ENV_FILE_PATH = ".env"
-
-# Write secret key to dotenv
-try:
-    # open file to write
-    with open(ENV_FILE_PATH, "w", encoding="utf-8") as env_file:
-        env_file.write(f"SECRET_KEY={secret_key}\n")
-except Exception as error:
-    print(f"An error occured when writing to .env file: {str(error)}")
-
-# Load dotenv and secret key
-load_dotenv()
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-
-# Creating and configurating the database
-try:
-    subprocess.run(["python3", "init_db.py"], check=True)
-except subprocess.CalledProcessError as error:
-    print(f"Error running init_db.py: {str(error)}")
-
 def get_db_connection():
     """
     Connecting to the SQLite database.
@@ -96,8 +74,14 @@ def create_location(name):
         )
         conn.commit()
         conn.close()
-    except:
-        flash("An error occurred. Location wasn't saved.", "error")
+    except sqlite3.IntegrityError as integrity_error:
+        flash(
+            f"An error occurred. Location wasn't saved due to a database integrity error: "
+            f"{str(integrity_error)}",
+            "error"
+        )
+    except sqlite3.DatabaseError as db_error:
+        flash(f"A database error occured. Location wasn't saved. {str(db_error)}", "error")
     else:
         flash(f"{name} has been added.", "info")
 
@@ -122,8 +106,14 @@ def update_location(location_id, new_name):
         )
         conn.commit()
         conn.close()
-    except:
-        flash("An error occurred. Location wasn't updated.", "error")
+    except sqlite3.IntegrityError as integrity_error:
+        flash(
+            f"An error occurred. Location wasn't saved due to a database integrity error: "
+            f"{str(integrity_error)}",
+            "error"
+        )
+    except sqlite3.DatabaseError as db_error:
+        flash(f"A database error occured. Location wasn't saved. {str(db_error)}", "error")
     else:
         flash(f"{new_name} has been updated.", "info")
 
@@ -168,20 +158,19 @@ def get_beverages(rows=("beverageId","beverageName"), join="LEFT JOIN", where=""
     """
     conn = get_db_connection()
 
-    # Formatting sqlRows
+    # The formatting of sql_rows
+    sql_rows = ""
     for row in rows:
-        try:
-            sql_rows
-        except:
-            sql_rows = row
-        else:
-            sql_rows = sql_rows + ", " + row
+        sql_rows += row + ", "
 
-    # Formatting sqlWhere
+    # Remove the trailing comma and space from the end of sql_rows
+    sql_rows = sql_rows.rstrip(", ")
+
+    # Formatting sql_where
     if where != "":
         sql_where = " WHERE " + where
     else:
-        sql_where = ""
+        pass
 
     sql_query = (
         f"SELECT {sql_rows} "
@@ -193,9 +182,14 @@ def get_beverages(rows=("beverageId","beverageName"), join="LEFT JOIN", where=""
     try:
         beverages = conn.execute(sql_query).fetchall()
         conn.close()
-    except:
-        flash("An error occurred when fetching the beverages.", "error")
-        return False
+    except sqlite3.IntegrityError as integrity_error:
+        flash(
+            f"An error occurred. Location wasn't saved due to a database integrity error: "
+            f"{str(integrity_error)}",
+            "error"
+        )
+    except sqlite3.DatabaseError as db_error:
+        flash(f"A database error occured. Location wasn't saved. {str(db_error)}", "error")
     return beverages
 
 @app.route("/")
@@ -424,12 +418,43 @@ def delete_location(location_id):
         )
         conn.commit()
         conn.close()
-    except Exception as error:
-        flash(f"An error occurred: {str(error)}. The location wasn't deleted.", "error")
+    except sqlite3.IntegrityError as integrity_error:
+        flash(
+            f"An error occurred. Location wasn't saved due to a database integrity error: "
+            f"{str(integrity_error)}",
+            "error"
+        )
+    except sqlite3.DatabaseError as db_error:
+        flash(f"A database error occured. Location wasn't saved. {str(db_error)}", "error")
     else:
         flash("The location has been deleted.", "info")
-    finally:
-        return redirect(url_for("locations"))
+
+    return redirect(url_for("locations"))
+
+with app.app_context():
+    # Generate secret key
+    secret_key = os.urandom(24).hex()
+    ENV_FILE_PATH = ".env"
+
+    # Write secret key to dotenv
+    try:
+        # open file to write
+        with open(ENV_FILE_PATH, "w", encoding="utf-8") as env_file:
+            env_file.write(f"SECRET_KEY={secret_key}\n")
+    except PermissionError as permission_error:
+        flash(f"A permission error occured while opening the .env file: {str(permission_error)}")
+    except IOError as io_error:
+        flash(f"An IO error occured while opening the .env file: {str(io_error)}")
+
+    # Load dotenv and secret key
+    load_dotenv()
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+
+    # Creating and configurating the database
+    try:
+        subprocess.run(["python3", "init_db.py"], check=True)
+    except subprocess.CalledProcessError as error:
+        print(f"Error running init_db.py: {str(error)}")
 
 if __name__ == "__main__":
     app.run()
