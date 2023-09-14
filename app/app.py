@@ -170,7 +170,7 @@ def get_beverages(rows=("beverageId","beverageName"), join="LEFT JOIN", where=""
     if where != "":
         sql_where = " WHERE " + where
     else:
-        pass
+        sql_where = ""
 
     sql_query = (
         f"SELECT {sql_rows} "

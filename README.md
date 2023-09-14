@@ -35,8 +35,11 @@ Requirements:
 # Clone the repo
 git clone
 
+# cd into the app directory
+cd app/
+
 # Launch the Flask app
-flask --debug --app main run
+flask --debug run
 ```
 
 Now, go to http://127.0.0.1:5000 in your browser.
