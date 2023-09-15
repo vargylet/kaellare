@@ -24,7 +24,7 @@
                     <td>{{ beverage["beverageYear"] }}</td>
                     {% if beverage["locationId"] != None %}
                         <td>{{ beverage["locationName"] }}</td>
-                        <td><a href="{{ url_for('finish_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Mark this beverage as finished" data-placement="right" role="button" class="outline contrast">Finish</td>
+                        <td><a href="{{ url_for('finish_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Mark this beverage as finished" data-placement="right" role="button" class="outline contrast">Finish</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}
