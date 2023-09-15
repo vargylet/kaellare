@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install HTML Linting Tool
+        run: npm install htmlhint
 
       - name: Run HTML linting
         run: npx htmlhint "**/*.html"
