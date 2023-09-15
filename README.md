@@ -13,7 +13,7 @@ This project is probably going to evolve quite slowly due to life... :-]
 docker run -d --name=kaellare -p 3000:3000 -v /path/to/data:/app/data ghcr.io/vargylet/kaellare:latest
 ```
 
-You can also use docker compose:
+The recommended way is to use docker compose:
 ```
 version: "2"
 
@@ -25,6 +25,8 @@ services:
       - 3000:3000
     volumes:
       - /path/to/data:/app/data
+    environment:
+      - TZ=Etc/UTC #Optional, defaults to Etc/UTC if not set.
 ```
 ## Development environment
 Requirements:
