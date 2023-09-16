@@ -15,7 +15,7 @@ docker run -d --name=kaellare -p 3000:3000 -v /path/to/data:/app/data ghcr.io/va
 
 The recommended way is to use docker compose:
 ```
-version: "2"
+version: "3.8"
 
 services:
   app:
