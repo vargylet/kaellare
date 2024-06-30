@@ -201,9 +201,28 @@ def dashboard():
     :return: An HTML page with some of the beverages' information.
     :rtype: str
     """
-    beverages = get_beverages(
-        ("beverageId", "beverageName", "beverageYear", "locationId", "locationName")
-    )
+
+    filter_value = request.args.get('filter')
+
+    # All beverages in the database
+    if filter_value == 'all':
+        beverages = get_beverages(
+            ("beverageId", "beverageName", "beverageYear", "locationId", "locationName")
+        )
+    # Beverages currently not in storage
+    elif filter_value == 'not_stored':
+        beverages = get_beverages(
+            ("beverageId", "beverageName", "beverageYear", "locationId", "locationName"), 
+            "LEFT JOIN", 
+            "beverageLocationId = 0"
+        )
+    # Beverages in storage
+    else:
+        beverages = get_beverages(
+            ("beverageId", "beverageName", "beverageYear", "locationId", "locationName"), 
+            "LEFT JOIN", 
+            "beverageLocationId != 0"
+        )
 
     return render_template("dashboard.html", beverages=beverages)
 
