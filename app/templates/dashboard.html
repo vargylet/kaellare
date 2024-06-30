@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 
 {% block content %}
     <h4>{% block title %}Dashboard{% endblock %}</h4>
@@ -20,13 +20,13 @@
         <tbody>
             {% for beverage in beverages %}
                 <tr>
-                    <td><a href="{{ url_for('view_beverage', beverage_id=beverage['beverageId']) }}">{{ beverage["beverageName"] }}</a></td>
-                    <td>{{ beverage["beverageYear"] }}</td>
-                    {% if beverage["locationId"] == None %}
+                    <td><a href="{{ url_for('view_beverage', beverage_id=beverage['beverageId']) }}">{{ beverage['beverageName'] }}</a></td>
+                    <td>{{ beverage['beverageYear'] }}</td>
+                    {% if beverage['locationId'] == None %}
                         <td></td>
                         <td></td>
                     {% else %}
-                        <td>{{ beverage["locationName"] }}</td>
+                        <td>{{ beverage['locationName'] }}</td>
                         <td><a href="{{ url_for('finish_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Mark this beverage as finished" data-placement="right" role="button" class="outline contrast">Finish</a></td>
                     {% endif %}
                 </tr>
