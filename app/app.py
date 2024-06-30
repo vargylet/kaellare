@@ -319,7 +319,7 @@ def finish_beverage(beverage_id):
     :rtype: str
     """
     conn = get_db_connection()
-    beverage = get_beverage(id)
+    beverage = get_beverage(beverage_id)
     conn.execute("UPDATE beverages "
                  "SET beverageLocationId = 0 "
                  "WHERE beverageId = ?",
