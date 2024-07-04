@@ -4,7 +4,7 @@
     <h4>{% block title %}Locations{% endblock %}</h4>
 
     <h5>Add location</h5>
-    <form method="post" action="{{ url_for('add_location') }}">
+    <form method="post" action="{{ url_for('locations_bp.add_location') }}">
         <label for="name">Name*</label>
         <br>
         <input type="text" name="name">
@@ -20,13 +20,13 @@
         </tr>
         {% for location in locations %}
             <tr>
-                <form method="post" action="{{ url_for('edit_location', location_id=location['locationId']) }}">
+                <form method="post" action="{{ url_for('locations_bp.edit_location', location_id=location['locationId']) }}">
                     <td>
                         <input type="text" name="name" value="{{ location['locationName'] }}">
                         <input type="hidden" name="id" value="{{ location['locationId'] }}">
                     </td>
                     <td>
-                        <button type="submit" class="slim-button">Update</button> <a href="{{ url_for('delete_location', location_id=location['locationId']) }}" data-tooltip="Permanently delete this location" data-placement="right" onclick="return confirm('This will permanently delete the location. Are you sure?')">Delete</a>
+                        <button type="submit" class="slim-button">Update</button> <a href="{{ url_for('locations_bp.delete_location', location_id=location['locationId']) }}" data-tooltip="Permanently delete this location" data-placement="right" onclick="return confirm('This will permanently delete the location. Are you sure?')">Delete</a>
                     </td>
                 </form>
             </tr>

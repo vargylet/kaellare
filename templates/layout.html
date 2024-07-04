@@ -10,12 +10,12 @@
 <body>
     <nav class="container-fluid">
         <ul>
-            <li><h3><a href="{{ url_for('dashboard') }}" class="contrast">kaellare</a></h3></li>
+            <li><h3><a href="{{ url_for('beverage_bp.index') }}" class="contrast">kaellare</a></h3></li>
         </ul>
         <ul>
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ url_for('add_beverage') }}">Add beverage</a></li>
-            <li><a href="{{ url_for('locations') }}">Locations</a></li>
+            <li><a href="{{ url_for('beverage_bp.index') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('beverage_bp.add_beverage') }}">Add beverage</a></li>
+            <li><a href="{{ url_for('locations_bp.index') }}">Locations</a></li>
         </ul>
     </nav>
 
