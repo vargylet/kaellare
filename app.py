@@ -4,7 +4,7 @@ It performs all the core features when the app is running.
 """
 import os
 import subprocess
-from flask import Flask, flash
+from flask import Flask, flash, redirect, url_for
 from dotenv import load_dotenv
 from routes.beverage import beverage_bp
 from routes.locations import locations_bp
@@ -12,6 +12,10 @@ from routes.locations import locations_bp
 app = Flask(__name__)
 app.register_blueprint(beverage_bp, url_prefix='/beverage')
 app.register_blueprint(locations_bp, url_prefix='/locations')
+
+@app.route('/')
+def index():
+    return redirect(url_for('beverage_bp.index'))
 
 with app.app_context():
     # Generate secret key
