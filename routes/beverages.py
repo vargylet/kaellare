@@ -1,13 +1,13 @@
 """
 Route for showing multiple beverages.
 """
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template
 from utils.beverage import get_beverages
 
 beverages_bp = Blueprint('beverages_bp', __name__)
 
 
-@beverages_bp.route("/")
+@beverages_bp.route('/')
 def index():
     """
     Fetches beverages from the database and shows the user the list of beverages in the database.
@@ -16,26 +16,35 @@ def index():
     :rtype: str
     """
 
-    filter_value = request.args.get('filter')
-
-    # All beverages in the database
-    if filter_value == 'all':
-        beverages = get_beverages(
-            ("beverageId", "beverageName", "beverageYear", "locationId", "locationName")
-        )
-    # Beverages currently not in storage
-    elif filter_value == 'not_stored':
-        beverages = get_beverages(
-            ("beverageId", "beverageName", "beverageYear", "locationId", "locationName"), 
-            "LEFT JOIN", 
-            "beverageLocationId = 0"
-        )
     # Beverages in storage
-    else:
-        beverages = get_beverages(
-            ("beverageId", "beverageName", "beverageYear", "locationId", "locationName"), 
-            "LEFT JOIN", 
-            "beverageLocationId != 0"
-        )
+    beverages = get_beverages(
+        ('beverageId', 'beverageName', 'beverageYear', 'locationId', 'locationName'), 
+        'LEFT JOIN', 
+        'beverageLocationId != 0'
+    )
 
-    return render_template("beverages.html", beverages=beverages)
+    return render_template('beverages.html', beverages=beverages)
+
+@beverages_bp.route('stored')
+def stored():
+    return index()
+
+
+@beverages_bp.route('finished')
+def finished():
+    beverages = get_beverages(
+            ('beverageId', 'beverageName', 'beverageYear', 'locationId', 'locationName'), 
+            'LEFT JOIN', 
+            'beverageLocationId = 0'
+        )
+    
+    return render_template('beverages.html', beverages=beverages)
+
+
+@beverages_bp.route('all')
+def all():
+    beverages = get_beverages(
+            ('beverageId', 'beverageName', 'beverageYear', 'locationId', 'locationName')
+        )
+    
+    return render_template('beverages.html', beverages=beverages)
