@@ -4,9 +4,9 @@
     <h4>{% block title %}Dashboard{% endblock %}</h4>
 
     <p>
-        <a href="{{ url_for('beverage_bp.index', filter='stored') }}" title="Currently stored beverages">Stored</a> |
-        <a href="{{ url_for('beverage_bp.index', filter='not_stored') }}" title="Previously stored beverages">Finished</a> |
-        <a href="{{ url_for('beverage_bp.index', filter='all') }}" title="Currently stored and previously stored beverages">All</a>
+        <a href="{{ url_for('beverages_bp.index', filter='stored') }}" title="Currently stored beverages">Stored</a> |
+        <a href="{{ url_for('beverages_bp.index', filter='not_stored') }}" title="Previously stored beverages">Finished</a> |
+        <a href="{{ url_for('beverages_bp.index', filter='all') }}" title="Currently stored and previously stored beverages">All</a>
     </p>
     <table role="grid">
         <thead>
