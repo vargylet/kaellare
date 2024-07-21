@@ -33,6 +33,6 @@
         <br>
         <textarea name="notes">{{ beverage["beverageNotes"] }}</textarea>
         <br>
-        <button type="submit">Update</button> <a href="{{ url_for('delete_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Permanently delete this beverage" onclick="return confirm('This will permanently delete this beverage. Are you sure?')">Delete</a>
+        <button type="submit">Update</button> <a href="{{ url_for('beverage_bp.delete_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Permanently delete this beverage" onclick="return confirm('This will permanently delete this beverage. Are you sure?')">Delete</a>
     </form>
 {% endblock %}

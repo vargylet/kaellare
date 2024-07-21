@@ -4,9 +4,9 @@
     <h4>{% block title %}Dashboard{% endblock %}</h4>
 
     <p>
-        <a href="{{ url_for('dashboard', filter='stored') }}" title="Currently stored beverages">Stored</a> |
-        <a href="{{ url_for('dashboard', filter='not_stored') }}" title="Previously stored beverages">Finished</a> |
-        <a href="{{ url_for('dashboard', filter='all') }}" title="Currently stored and previously stored beverages">All</a>
+        <a href="{{ url_for('beverages_bp.stored') }}" title="Currently stored beverages">Stored</a> |
+        <a href="{{ url_for('beverages_bp.finished') }}" title="Previously stored beverages">Finished</a> |
+        <a href="{{ url_for('beverages_bp.all') }}" title="Currently stored and previously stored beverages">All</a>
     </p>
     <table role="grid">
         <thead>
@@ -20,14 +20,14 @@
         <tbody>
             {% for beverage in beverages %}
                 <tr>
-                    <td><a href="{{ url_for('view_beverage', beverage_id=beverage['beverageId']) }}">{{ beverage['beverageName'] }}</a></td>
+                    <td><a href="{{ url_for('beverage_bp.view_beverage', beverage_id=beverage['beverageId']) }}">{{ beverage['beverageName'] }}</a></td>
                     <td>{{ beverage['beverageYear'] }}</td>
                     {% if beverage['locationId'] == None %}
                         <td></td>
                         <td></td>
                     {% else %}
                         <td>{{ beverage['locationName'] }}</td>
-                        <td><a href="{{ url_for('finish_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Mark this beverage as finished" data-placement="right" role="button" class="outline contrast">Finish</a></td>
+                        <td><a href="{{ url_for('beverage_bp.finish_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Mark this beverage as finished" data-placement="right" role="button" class="outline contrast">Finish</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}

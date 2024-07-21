@@ -3,7 +3,7 @@
 {% block content %}
     <nav aria-label="breadcrumb">
         <ul>
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('beverages_bp.index') }}">Dashboard</a></li>
             <li>{{ beverage["beverageName"] }}{% if beverage["beverageYear"] != "" %} ({{ beverage["beverageYear"] }}){% endif %}</li>
         </ul>
     </nav>
@@ -32,5 +32,5 @@
             </tr>
         </tbody>
     </table>
-    <a href="{{ url_for('edit_beverage', beverage_id=beverage['beverageId']) }}" role="button" class="outline contrast">Edit</a>
+    <a href="{{ url_for('beverage_bp.edit_beverage', beverage_id=beverage['beverageId']) }}" role="button" class="outline contrast">Edit</a>
 {% endblock %}

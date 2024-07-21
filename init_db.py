@@ -5,10 +5,15 @@ creates the SQLite database in data/ if it doesn't already exist.
 import sqlite3
 import os
 
-# Database filename
-DATABASE_FILE_PATH = "./data/database.db"
+# Database directory and filename
+DATABASE_DIR = './data'
+DATABASE_FILE_PATH = os.path.join(DATABASE_DIR, 'database.db')
 # Initial database structure
 SQL_FILE_PATH = "schema.sql"
+
+# Create data directory if it doesn't exist
+if not os.path.exists(DATABASE_DIR):
+    os.makedirs(DATABASE_DIR)
 
 if not os.path.isfile(DATABASE_FILE_PATH):
     # Database file doesn't exist

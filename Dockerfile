@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.11.5-alpine
+FROM python:3.12.4-alpine3.20
 
 # Set environment variables
 # Time zone
@@ -14,7 +14,14 @@ RUN apk update && \
 
 # Copy files to container
 COPY ./requirements.txt /app/requirements.txt
-COPY ./app /app
+COPY ./app.py /app/app.py
+COPY ./main.wsgi /app/main.wsgi
+COPY ./init_db.py /app/init_db.py
+COPY ./schema.sql /app/schema.sql
+COPY ./routes /app/routes
+COPY ./static /app/static
+COPY ./templates /app/templates
+COPY ./utils /app/utils
 
 # Change workdir
 WORKDIR /app
