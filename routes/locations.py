@@ -65,7 +65,7 @@ def delete_location(location_id):
     beverages = get_beverages(("beverageId",), "LEFT JOIN", f"beverageLocationId = {location_id}")
     if len(beverages) != 0:
         flash("You can't delete a location that still holds beverages.", "error")
-        return redirect(url_for("locations"))
+        return redirect(url_for("locations_bp.index"))
 
     try:
         conn = get_db_connection()

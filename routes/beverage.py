@@ -46,7 +46,7 @@ def add_beverage():
             conn.close()
 
             flash(f"{name} has been saved.", "info")
-            return redirect(url_for("beverage_bp.index"))
+            return redirect(url_for("beverages_bp.index"))
 
     locations_all = get_all_locations()
 
@@ -105,7 +105,7 @@ def edit_beverage(beverage_id):
             conn.close()
 
             flash(f"{name} has been updated.", "info")
-            return redirect(url_for("beverage_bp.index"))
+            return redirect(url_for("beverages_bp.index"))
 
     beverage = get_beverage(beverage_id)
     locations_all = get_all_locations()
@@ -134,7 +134,7 @@ def finish_beverage(beverage_id):
     conn.close()
 
     flash(f"{beverage['beverageName']} has been marked as finished.", "info")
-    return redirect(url_for("beverage_bp.index"))
+    return redirect(url_for("beverages_bp.index"))
 
 
 @beverage_bp.route("/delete/<int:beverage_id>")
@@ -157,4 +157,4 @@ def delete_beverage(beverage_id):
     conn.close()
 
     flash(f"{beverage['beverageName']} has been deleted.", "info")
-    return redirect(url_for("beverage_bp.index"))
+    return redirect(url_for("beverages_bp.index"))
