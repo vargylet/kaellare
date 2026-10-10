@@ -4,6 +4,7 @@
     <h4>{% block title %}Edit {{ beverage["beverageName"] }}{% endblock %}{% if beverage["beverageYear"] != "" %} ({{ beverage["beverageYear"] }}){% endif %}</h4>
 
     <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="location">Location*</label>
         <br>
         <select name="location" autofocus>
@@ -33,6 +34,6 @@
         <br>
         <textarea name="notes">{{ beverage["beverageNotes"] }}</textarea>
         <br>
-        <button type="submit">Update</button> <a href="{{ url_for('beverage_bp.delete_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Permanently delete this beverage" onclick="return confirm('This will permanently delete this beverage. Are you sure?')">Delete</a>
+        <button type="submit">Update</button> <button type="submit" formaction="{{ url_for('beverage_bp.delete_beverage', beverage_id=beverage['beverageId']) }}" formnovalidate class="secondary" data-tooltip="Permanently delete this beverage" onclick="return confirm('This will permanently delete this beverage. Are you sure?')">Delete</button>
     </form>
 {% endblock %}

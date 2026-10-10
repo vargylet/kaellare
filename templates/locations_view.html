@@ -5,6 +5,7 @@
 
     <h5>Add location</h5>
     <form method="post" action="{{ url_for('locations_bp.add_location') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="name">Name*</label>
         <br>
         <input type="text" name="name">
@@ -24,9 +25,10 @@
                     <td>
                         <input type="text" name="name" value="{{ location['locationName'] }}">
                         <input type="hidden" name="id" value="{{ location['locationId'] }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     </td>
                     <td>
-                        <button type="submit" class="slim-button">Update</button> <a href="{{ url_for('locations_bp.delete_location', location_id=location['locationId']) }}" data-tooltip="Permanently delete this location" data-placement="right" onclick="return confirm('This will permanently delete the location. Are you sure?')">Delete</a>
+                        <button type="submit" class="slim-button">Update</button> <button type="submit" formaction="{{ url_for('locations_bp.delete_location', location_id=location['locationId']) }}" class="slim-button secondary" data-tooltip="Permanently delete this location" data-placement="right" onclick="return confirm('This will permanently delete the location. Are you sure?')">Delete</button>
                     </td>
                 </form>
             </tr>

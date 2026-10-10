@@ -27,7 +27,12 @@
                         <td></td>
                     {% else %}
                         <td>{{ beverage['locationName'] }}</td>
-                        <td><a href="{{ url_for('beverage_bp.finish_beverage', beverage_id=beverage['beverageId']) }}" data-tooltip="Mark this beverage as finished" data-placement="right" role="button" class="outline contrast">Finish</a></td>
+                        <td>
+                            <form method="post" action="{{ url_for('beverage_bp.finish_beverage', beverage_id=beverage['beverageId']) }}" class="inline-form">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" data-tooltip="Mark this beverage as finished" class="outline contrast">Finish</button>
+                            </form>
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}

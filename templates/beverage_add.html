@@ -4,6 +4,7 @@
     <h4>{% block title %}Add a beverage{% endblock %}</h4>
     
     <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="location">Location*</label>
         <br>
         <select name="location" autofocus>

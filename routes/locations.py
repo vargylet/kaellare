@@ -52,7 +52,7 @@ def edit_location(location_id):
     return redirect(url_for("locations_bp.index"))
 
 
-@locations_bp.route("/delete_location/<int:location_id>")
+@locations_bp.route("/delete_location/<int:location_id>", methods=["POST"])
 def delete_location(location_id):
     """
     Deletes a location and all its data from the database.

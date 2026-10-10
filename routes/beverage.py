@@ -113,7 +113,7 @@ def edit_beverage(beverage_id):
     return render_template("beverage_edit.html", beverage=beverage, locations=locations_all)
 
 
-@beverage_bp.route("/finished/<int:beverage_id>")
+@beverage_bp.route("/finished/<int:beverage_id>", methods=["POST"])
 def finish_beverage(beverage_id):
     """
     Marks a beverage as finished and stores that information in the database.
@@ -137,7 +137,7 @@ def finish_beverage(beverage_id):
     return redirect(url_for("beverages_bp.index"))
 
 
-@beverage_bp.route("/delete/<int:beverage_id>")
+@beverage_bp.route("/delete/<int:beverage_id>", methods=["POST"])
 def delete_beverage(beverage_id):
     """
     Deletes a beverage from the database and all its data.

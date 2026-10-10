@@ -3,7 +3,8 @@ Main module for the app.
 """
 import os
 import secrets
-from flask import Flask, redirect, url_for
+from flask import Flask, flash, redirect, url_for
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from dotenv import load_dotenv
 from init_db import init_db, DATABASE_DIR
 from routes.beverages import beverages_bp
@@ -52,12 +53,22 @@ init_db()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = get_secret_key()
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
+# Every POST request must carry the form's csrf_token
+csrf = CSRFProtect(app)
+
 app.register_blueprint(beverages_bp, url_prefix='/beverages')
 app.register_blueprint(beverage_bp, url_prefix='/beverage')
 app.register_blueprint(locations_bp, url_prefix='/locations')
 
 @app.route('/')
 def index():
+    return redirect(url_for('beverages_bp.index'))
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(error):
+    flash("The form has expired or is invalid. Please try again.", "error")
     return redirect(url_for('beverages_bp.index'))
 
 if __name__ == '__main__':

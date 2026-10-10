@@ -22,3 +22,16 @@ kaellare specific css
   background-color: #6dca89;
   border-radius: 5px;
 }
+
+.inline-form {
+    margin: 0;
+}
+
+/* More space between top tooltips and their element (Pico default is 0.25rem) */
+[data-tooltip]:not([data-placement=bottom], [data-placement=left], [data-placement=right]):is(:hover, :focus)::before {
+    --pico-tooltip-slide-to: translate(-50%, -0.75rem);
+}
+
+[data-tooltip]:not([data-placement=bottom], [data-placement=left], [data-placement=right]):is(:hover, :focus)::after {
+    --pico-tooltip-caret-slide-to: translate(-50%, -0.5rem);
+}
