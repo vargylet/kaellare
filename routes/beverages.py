@@ -17,11 +17,7 @@ def index():
     """
 
     # Beverages in storage
-    beverages = get_beverages(
-        ('beverageId', 'beverageName', 'beverageYear', 'locationId', 'locationName'), 
-        'LEFT JOIN', 
-        'beverageLocationId != 0'
-    )
+    beverages = get_beverages(finished=False)
 
     return render_template('beverages.html', beverages=beverages)
 
@@ -32,19 +28,13 @@ def stored():
 
 @beverages_bp.route('finished')
 def finished():
-    beverages = get_beverages(
-            ('beverageId', 'beverageName', 'beverageYear', 'locationId', 'locationName'), 
-            'LEFT JOIN', 
-            'beverageLocationId = 0'
-        )
+    beverages = get_beverages(finished=True)
     
     return render_template('beverages.html', beverages=beverages)
 
 
 @beverages_bp.route('all')
 def all():
-    beverages = get_beverages(
-            ('beverageId', 'beverageName', 'beverageYear', 'locationId', 'locationName')
-        )
+    beverages = get_beverages()
     
     return render_template('beverages.html', beverages=beverages)

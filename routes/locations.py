@@ -2,7 +2,6 @@ import sqlite3
 from flask import Blueprint, render_template, redirect, flash, url_for, request
 from utils.db import get_db_connection
 from utils.locations import get_all_locations, create_location, update_location
-from utils.beverage import get_beverages
 
 locations_bp = Blueprint('locations_bp', __name__)
 
@@ -62,27 +61,33 @@ def delete_location(location_id):
     :return: An HTML page with all current locations.
     :rtype: 
     """
-    beverages = get_beverages(("beverageId",), "LEFT JOIN", f"beverageLocationId = {location_id}")
-    if len(beverages) != 0:
-        flash("You can't delete a location that still holds beverages.", "error")
-        return redirect(url_for("locations_bp.index"))
-
     try:
         conn = get_db_connection()
-        conn.execute("DELETE FROM locations "
-                     "WHERE locationId = ?",
-                     (location_id,)
-        )
-        conn.commit()
-        conn.close()
+        try:
+            beverage_count = conn.execute(
+                "SELECT COUNT(*) FROM beverages "
+                "WHERE beverageLocationId = ?",
+                (location_id,)
+            ).fetchone()[0]
+            if beverage_count != 0:
+                flash("You can't delete a location that still holds beverages.", "error")
+                return redirect(url_for("locations_bp.index"))
+
+            conn.execute("DELETE FROM locations "
+                         "WHERE locationId = ?",
+                         (location_id,)
+            )
+            conn.commit()
+        finally:
+            conn.close()
     except sqlite3.IntegrityError as integrity_error:
         flash(
-            f"An error occurred. Location wasn't saved due to a database integrity error: "
+            f"An error occurred. Location wasn't deleted due to a database integrity error: "
             f"{str(integrity_error)}",
             "error"
         )
     except sqlite3.DatabaseError as db_error:
-        flash(f"A database error occured. Location wasn't saved. {str(db_error)}", "error")
+        flash(f"A database error occurred. Location wasn't deleted. {str(db_error)}", "error")
     else:
         flash("The location has been deleted.", "info")
 

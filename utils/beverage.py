@@ -29,54 +29,39 @@ def get_beverage(beverage_id):
         abort(404)
     return beverage
 
-def get_beverages(rows=("beverageId","beverageName"), join="LEFT JOIN", where=""):
+def get_beverages(finished=None):
     """
-    Fetches data from the database about beverages based on the provided query.
+    Fetches the beverages to list on the dashboard, sorted by name.
 
-    :param rows: The rows to fetch from the database.
-                 Defaults to "beverageId","beverageName" if not provided.
-    :type rows: string
-    :param join: How you want to use join in your query.
-                 Defaults to "LEFT JOIN" if not provided.
-    :type join: string
-    :param where: You can add a WHERE clause. It should not include "WHERE".
-                  Defaults to none if not provided.
-    :type where: string
-    :return: The data requested about the beverage.
-    :rtype: tuple
+    :param finished: True for finished beverages, False for stored beverages
+                     and None (default) for all beverages.
+    :type finished: bool or None
+    :return: The beverages' id, name, year, location id and location name.
+             An empty list if the database couldn't be read.
+    :rtype: list
     """
-    conn = get_db_connection()
-
-    # The formatting of sql_rows
-    sql_rows = ""
-    for row in rows:
-        sql_rows += row + ", "
-
-    # Remove the trailing comma and space from the end of sql_rows
-    sql_rows = sql_rows.rstrip(", ")
-
-    # Formatting sql_where
-    if where != "":
-        sql_where = " WHERE " + where
-    else:
+    # Only fixed SQL fragments are used, never input from the caller
+    if finished is None:
         sql_where = ""
+    elif finished:
+        sql_where = "WHERE beverageLocationId = 0 "
+    else:
+        sql_where = "WHERE beverageLocationId != 0 "
 
     sql_query = (
-        f"SELECT {sql_rows} "
-        f"FROM beverages {join} locations ON beverageLocationId=locationId"
-        f"{sql_where} "
+        "SELECT beverageId, beverageName, beverageYear, locationId, locationName "
+        "FROM beverages "
+        "LEFT JOIN locations ON beverageLocationId=locationId "
+        f"{sql_where}"
         "ORDER BY beverageName ASC"
     )
 
     try:
-        beverages = conn.execute(sql_query).fetchall()
-        conn.close()
-    except sqlite3.IntegrityError as integrity_error:
-        flash(
-            f"An error occurred. Beverage wasn't saved due to a database integrity error: "
-            f"{str(integrity_error)}",
-            "error"
-        )
-    except sqlite3.DatabaseError as db_error:
-        flash(f"A database error occured. Beverage wasn't saved. {str(db_error)}", "error")
-    return beverages
+        conn = get_db_connection()
+        try:
+            return conn.execute(sql_query).fetchall()
+        finally:
+            conn.close()
+    except sqlite3.Error as db_error:
+        flash(f"A database error occurred. Beverages couldn't be loaded. {str(db_error)}", "error")
+        return []

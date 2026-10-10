@@ -3,7 +3,7 @@ Route for showing pages related to single beverage.
 """
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from utils.db import get_db_connection
-from utils.beverage import get_beverage, get_beverages
+from utils.beverage import get_beverage
 from utils.locations import get_all_locations
 
 beverage_bp = Blueprint('beverage_bp', __name__)
