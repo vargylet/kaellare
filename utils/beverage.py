@@ -73,10 +73,10 @@ def get_beverages(rows=("beverageId","beverageName"), join="LEFT JOIN", where=""
         conn.close()
     except sqlite3.IntegrityError as integrity_error:
         flash(
-            f"An error occurred. Location wasn't saved due to a database integrity error: "
+            f"An error occurred. Beverage wasn't saved due to a database integrity error: "
             f"{str(integrity_error)}",
             "error"
         )
     except sqlite3.DatabaseError as db_error:
-        flash(f"A database error occured. Location wasn't saved. {str(db_error)}", "error")
+        flash(f"A database error occured. Beverage wasn't saved. {str(db_error)}", "error")
     return beverages
