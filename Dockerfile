@@ -33,4 +33,4 @@ EXPOSE 3000
 RUN pip install -r requirements.txt
 
 # Start app with gunicorn
-ENTRYPOINT ["gunicorn", "-w1", "-b0.0.0.0:3000", "app:app"]
+ENTRYPOINT ["gunicorn", "-w1", "-b0.0.0.0:3000", "--no-control-socket", "app:app"]
