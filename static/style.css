@@ -1,6 +1,835 @@
 /*
-kaellare specific css
+kaellare css
+
+The base styles reproduce the look kaellare had with Pico CSS v2.0.6
+(jade theme), reduced to what the app uses. Pico CSS is
+Copyright 2019-2024 Pico, licensed under MIT (https://picocss.com).
 */
+
+/* ---------- Variables ---------- */
+
+:root {
+  --font-family: system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-size: 100%;
+  --font-weight: 400;
+  --line-height: 1.5;
+  --border-radius: 0.25rem;
+  --border-width: 0.0625rem;
+  --outline-width: 0.125rem;
+  --transition: 0.2s ease-in-out;
+  --spacing: 1rem;
+  --form-spacing-vertical: 0.75rem;
+  --form-spacing-horizontal: 1rem;
+  --nav-element-spacing-vertical: 1rem;
+  --nav-element-spacing-horizontal: 0.5rem;
+  --nav-link-spacing: 0.5rem;
+
+  --icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(136, 145, 164)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --icon-date: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(136, 145, 164)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+
+  /* Light theme */
+  --background: #fff;
+  --text: #373c44;
+  --text-selection: rgba(0, 166, 110, 0.25);
+  --muted: #646b79;
+  --muted-border: #e7eaf0;
+  --h3-color: #424751;
+  --h4-color: #4d535e;
+  --h5-color: #5c6370;
+
+  --primary: #007a50;
+  --primary-background: #007a50;
+  --primary-underline: rgba(0, 122, 80, 0.5);
+  --primary-hover: #005f3d;
+  --primary-hover-background: #006d46;
+  --primary-focus: rgba(0, 166, 110, 0.5);
+  --primary-inverse: #fff;
+
+  --secondary-background: #525f7a;
+  --secondary-hover-background: #48536b;
+  --secondary-focus: rgba(93, 107, 137, 0.25);
+  --secondary-inverse: #fff;
+
+  --contrast: #181c25;
+  --contrast-background: #181c25;
+  --contrast-underline: rgba(24, 28, 37, 0.5);
+  --contrast-hover: #000;
+  --contrast-hover-background: #000;
+  --contrast-hover-underline: #48536b;
+  --contrast-focus: rgba(93, 107, 137, 0.25);
+  --contrast-inverse: #fff;
+
+  --card-background: var(--background);
+  --card-shadow: 0.0145rem 0.029rem 0.174rem rgba(129, 145, 181, 0.01698), 0.0335rem 0.067rem 0.402rem rgba(129, 145, 181, 0.024), 0.0625rem 0.125rem 0.75rem rgba(129, 145, 181, 0.03), 0.1125rem 0.225rem 1.35rem rgba(129, 145, 181, 0.036), 0.2085rem 0.417rem 2.502rem rgba(129, 145, 181, 0.04302), 0.5rem 1rem 6rem rgba(129, 145, 181, 0.06), 0 0 0 0.0625rem rgba(129, 145, 181, 0.015);
+
+  --input-background: #fbfcfc;
+  --input-active-background: #fff;
+  --input-border: #cfd5e2;
+  --input-text: #23262c;
+  --input-placeholder: var(--muted);
+
+  --tooltip-background: var(--contrast-background);
+  --tooltip-text: var(--contrast-inverse);
+
+  color-scheme: light;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+  :root {
+    --background: #13171f;
+    --text: #c2c7d0;
+    --text-selection: rgba(0, 180, 120, 0.1875);
+    --muted: #7b8495;
+    --muted-border: #202632;
+    --h3-color: #c2c7d0;
+    --h4-color: #b3b9c5;
+    --h5-color: #a4acba;
+
+    --primary: #00b478;
+    --primary-underline: rgba(0, 180, 120, 0.5);
+    --primary-hover: #00cc88;
+    --primary-hover-background: #00895a;
+    --primary-focus: rgba(0, 180, 120, 0.375);
+
+    --secondary-hover-background: #5d6b89;
+    --secondary-focus: rgba(144, 158, 190, 0.25);
+
+    --contrast: #dfe3eb;
+    --contrast-background: #eff1f4;
+    --contrast-underline: rgba(223, 227, 235, 0.5);
+    --contrast-hover: #fff;
+    --contrast-hover-background: #fff;
+    --contrast-hover-underline: #fff;
+    --contrast-focus: rgba(207, 213, 226, 0.25);
+    --contrast-inverse: #000;
+
+    --card-background: #181c25;
+    --card-shadow: 0.0145rem 0.029rem 0.174rem rgba(7, 9, 12, 0.01698), 0.0335rem 0.067rem 0.402rem rgba(7, 9, 12, 0.024), 0.0625rem 0.125rem 0.75rem rgba(7, 9, 12, 0.03), 0.1125rem 0.225rem 1.35rem rgba(7, 9, 12, 0.036), 0.2085rem 0.417rem 2.502rem rgba(7, 9, 12, 0.04302), 0.5rem 1rem 6rem rgba(7, 9, 12, 0.06), 0 0 0 0.0625rem rgba(7, 9, 12, 0.015);
+
+    --input-background: #1c212c;
+    --input-active-background: #1a1f28;
+    --input-border: #2a3140;
+    --input-text: #e0e3e7;
+    --input-placeholder: #8891a4;
+
+    color-scheme: dark;
+  }
+}
+
+/* Text grows with the screen width */
+@media (min-width: 576px) {
+  :root { --font-size: 106.25%; }
+}
+
+@media (min-width: 768px) {
+  :root { --font-size: 112.5%; }
+}
+
+@media (min-width: 1024px) {
+  :root { --font-size: 118.75%; }
+}
+
+@media (min-width: 1280px) {
+  :root { --font-size: 125%; }
+}
+
+@media (min-width: 1536px) {
+  :root { --font-size: 131.25%; }
+}
+
+/* ---------- Base ---------- */
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+}
+
+::before,
+::after {
+  text-decoration: inherit;
+  vertical-align: inherit;
+}
+
+:where(:root) {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background-color: var(--background);
+  color: var(--text);
+  font-weight: var(--font-weight);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  font-family: var(--font-family);
+  text-underline-offset: 0.1rem;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+}
+
+main {
+  display: block;
+}
+
+body > main {
+  padding-block: var(--spacing);
+}
+
+::selection {
+  background-color: var(--text-selection);
+}
+
+/* ---------- Layout ---------- */
+
+.container,
+.container-fluid {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--spacing);
+  padding-left: var(--spacing);
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 510px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .container { max-width: 700px; }
+}
+
+@media (min-width: 1024px) {
+  .container { max-width: 950px; }
+}
+
+@media (min-width: 1280px) {
+  .container { max-width: 1200px; }
+}
+
+@media (min-width: 1536px) {
+  .container { max-width: 1450px; }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: var(--spacing);
+  row-gap: var(--spacing);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(0%, 1fr));
+  }
+}
+
+.grid > * {
+  min-width: 0;
+}
+
+/* Card */
+article {
+  margin-bottom: var(--spacing);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  background: var(--card-background);
+  box-shadow: var(--card-shadow);
+}
+
+/* ---------- Typography ---------- */
+
+p,
+table,
+ul {
+  margin-top: 0;
+  margin-bottom: var(--spacing);
+  color: var(--text);
+  font-style: normal;
+  font-weight: var(--font-weight);
+}
+
+h3,
+h4,
+h5 {
+  margin-top: 0;
+  margin-bottom: var(--spacing);
+  font-weight: 700;
+  font-family: var(--font-family);
+}
+
+h3 {
+  --heading-spacing-top: 2.25rem;
+  color: var(--h3-color);
+  font-size: 1.5rem;
+  line-height: 1.175;
+}
+
+h4 {
+  --heading-spacing-top: 1.874rem;
+  color: var(--h4-color);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+h5 {
+  --heading-spacing-top: 1.6875rem;
+  color: var(--h5-color);
+  font-size: 1.125rem;
+  line-height: 1.225;
+}
+
+/* Extra space above a heading that follows text, a form or a table */
+:where(article, form, p, table, ul) ~ :is(h3, h4, h5) {
+  margin-top: var(--heading-spacing-top);
+}
+
+:where(ul) li {
+  margin-bottom: calc(var(--spacing) * 0.25);
+}
+
+ul li {
+  list-style: square;
+}
+
+/* ---------- Links ---------- */
+
+:where(a:not([role=button])) {
+  outline: 0;
+  background-color: transparent;
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: var(--primary-underline);
+  text-underline-offset: 0.125em;
+  transition: background-color var(--transition), color var(--transition), text-decoration var(--transition), box-shadow var(--transition);
+}
+
+:where(a:not([role=button])):is(:hover, :active, :focus) {
+  color: var(--primary-hover);
+  text-decoration: underline;
+  text-decoration-color: var(--primary-hover);
+}
+
+:where(a:not([role=button])):focus-visible {
+  box-shadow: 0 0 0 var(--outline-width) var(--primary-focus);
+}
+
+:where(a:not([role=button])).contrast {
+  color: var(--contrast);
+  text-decoration-color: var(--contrast-underline);
+}
+
+:where(a:not([role=button])).contrast:is(:hover, :active, :focus) {
+  color: var(--contrast-hover);
+  text-decoration-color: var(--contrast-hover-underline);
+}
+
+/* ---------- Buttons ---------- */
+
+button {
+  margin: 0;
+  overflow: visible;
+  font-family: inherit;
+  text-transform: none;
+}
+
+[type=submit],
+button {
+  -webkit-appearance: button;
+}
+
+::-moz-focus-inner {
+  padding: 0;
+  border-style: none;
+}
+
+button,
+[type=submit],
+[role=button] {
+  --button-background: var(--primary-background);
+  --button-border: var(--primary-background);
+  --button-color: var(--primary-inverse);
+  --button-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  padding: var(--form-spacing-vertical) var(--form-spacing-horizontal);
+  border: var(--border-width) solid var(--button-border);
+  border-radius: var(--border-radius);
+  outline: 0;
+  background-color: var(--button-background);
+  box-shadow: var(--button-shadow);
+  color: var(--button-color);
+  font-weight: var(--font-weight);
+  font-size: 1rem;
+  line-height: var(--line-height);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+a[role=button] {
+  display: inline-block;
+}
+
+button:is(:hover, :active, :focus),
+[type=submit]:is(:hover, :active, :focus),
+[role=button]:is(:hover, :active, :focus) {
+  --button-background: var(--primary-hover-background);
+  --button-border: var(--primary-hover-background);
+  --button-color: var(--primary-inverse);
+}
+
+button:focus,
+[type=submit]:focus,
+[role=button]:focus {
+  --button-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 0 0 var(--outline-width) var(--primary-focus);
+}
+
+[type=submit] {
+  margin-bottom: var(--spacing);
+}
+
+:is(button, [role=button]).secondary {
+  --button-background: var(--secondary-background);
+  --button-border: var(--secondary-background);
+  --button-color: var(--secondary-inverse);
+}
+
+:is(button, [role=button]).secondary:is(:hover, :active, :focus) {
+  --button-background: var(--secondary-hover-background);
+  --button-border: var(--secondary-hover-background);
+}
+
+:is(button, [role=button]).secondary:focus {
+  --button-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 0 0 var(--outline-width) var(--secondary-focus);
+}
+
+:is(button, [role=button]).contrast {
+  --button-background: var(--contrast-background);
+  --button-border: var(--contrast-background);
+  --button-color: var(--contrast-inverse);
+}
+
+:is(button, [role=button]).contrast:is(:hover, :active, :focus) {
+  --button-background: var(--contrast-hover-background);
+  --button-border: var(--contrast-hover-background);
+}
+
+:is(button, [role=button]).contrast:focus {
+  --button-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 0 0 var(--outline-width) var(--contrast-focus);
+}
+
+:is(button, [role=button]).outline {
+  --button-background: transparent;
+  --button-color: var(--primary);
+  --button-border: var(--primary);
+}
+
+:is(button, [role=button]).outline:is(:hover, :active, :focus) {
+  --button-background: transparent;
+  --button-color: var(--primary-hover);
+  --button-border: var(--primary-hover);
+}
+
+:is(button, [role=button]).outline.contrast {
+  --button-color: var(--contrast);
+  --button-border: var(--contrast);
+}
+
+:is(button, [role=button]).outline.contrast:is(:hover, :active, :focus) {
+  --button-color: var(--contrast-hover);
+  --button-border: var(--contrast-hover);
+}
+
+/* ---------- Tables ---------- */
+
+:where(table) {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-indent: 0;
+}
+
+td,
+th {
+  padding: calc(var(--spacing) / 2) var(--spacing);
+  border-bottom: var(--border-width) solid var(--muted-border);
+  background-color: var(--background);
+  color: var(--text);
+  font-weight: var(--font-weight);
+  text-align: left;
+  text-align: start;
+}
+
+thead td,
+thead th {
+  border-bottom-width: 0.1875rem;
+  font-weight: 600;
+}
+
+/* ---------- Forms ---------- */
+
+input,
+select,
+textarea {
+  margin: 0;
+  font-size: 1rem;
+  line-height: var(--line-height);
+  font-family: inherit;
+  letter-spacing: inherit;
+}
+
+input {
+  overflow: visible;
+}
+
+select {
+  text-transform: none;
+}
+
+textarea {
+  overflow: auto;
+}
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+:-moz-focusring {
+  outline: 0;
+}
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+input:not([type=checkbox], [type=radio], [type=range]) {
+  height: calc(1rem * var(--line-height) + var(--form-spacing-vertical) * 2 + var(--border-width) * 2);
+}
+
+label {
+  display: block;
+  margin-bottom: calc(var(--spacing) * 0.375);
+  color: var(--text);
+  font-weight: var(--font-weight);
+}
+
+button[type=submit],
+input:not([type=checkbox], [type=radio]),
+select,
+textarea {
+  width: 100%;
+}
+
+input:not([type=checkbox], [type=radio], [type=range], [type=file]),
+select,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: var(--form-spacing-vertical) var(--form-spacing-horizontal);
+}
+
+input,
+select,
+textarea {
+  border: var(--border-width) solid var(--input-border);
+  border-radius: var(--border-radius);
+  outline: 0;
+  background-color: var(--input-background);
+  box-shadow: none;
+  color: var(--input-text);
+  font-weight: var(--font-weight);
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+:where(select, textarea):not([readonly]):is(:active, :focus),
+input:not([type=submit], [type=button], [type=reset], [type=checkbox], [type=radio], [readonly]):is(:active, :focus) {
+  border-color: var(--primary-background);
+  background-color: var(--input-active-background);
+}
+
+:where(select, textarea):not([readonly]):focus,
+input:not([type=submit], [type=button], [type=reset], [type=range], [type=file], [readonly]):focus {
+  box-shadow: 0 0 0 0.0625rem var(--primary-background);
+}
+
+/* Kept as one list on purpose: browsers that don't know ::-webkit-input-placeholder skip the whole rule */
+input::-webkit-input-placeholder,
+input::placeholder,
+select:invalid,
+textarea::-webkit-input-placeholder,
+textarea::placeholder {
+  color: var(--input-placeholder);
+  opacity: 1;
+}
+
+input:not([type=checkbox], [type=radio]),
+select,
+textarea {
+  margin-bottom: var(--spacing);
+}
+
+select:not([multiple], [size]) {
+  padding-right: calc(var(--form-spacing-horizontal) + 1.5rem);
+  padding-left: var(--form-spacing-horizontal);
+  padding-inline-start: var(--form-spacing-horizontal);
+  padding-inline-end: calc(var(--form-spacing-horizontal) + 1.5rem);
+  background-image: var(--icon-chevron);
+  background-position: center right 0.75rem;
+  background-size: 1rem auto;
+  background-repeat: no-repeat;
+}
+
+textarea {
+  display: block;
+  resize: vertical;
+}
+
+/* Date inputs: own calendar icon, the browser's picker stays clickable on top of it */
+input[type=date] {
+  padding-right: 1.75rem;
+  background-image: var(--icon-date);
+  background-position: center right 0.75rem;
+  background-size: 1rem auto;
+  background-repeat: no-repeat;
+}
+
+[type=date]::-webkit-calendar-picker-indicator {
+  width: 1rem;
+  margin-right: -1rem;
+  margin-left: 0.75rem;
+  opacity: 0;
+}
+
+/* Firefox shows its own calendar icon, so it gets no extra one */
+@-moz-document url-prefix() {
+  [type=date] {
+    padding-right: var(--form-spacing-horizontal) !important;
+    background-image: none !important;
+  }
+}
+
+/* ---------- Navigation ---------- */
+
+nav,
+nav ul {
+  display: flex;
+}
+
+nav {
+  justify-content: space-between;
+  overflow: visible;
+}
+
+nav ul {
+  align-items: center;
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav ul:first-of-type {
+  margin-left: calc(var(--nav-element-spacing-horizontal) * -1);
+}
+
+nav ul:last-of-type {
+  margin-right: calc(var(--nav-element-spacing-horizontal) * -1);
+}
+
+nav li {
+  display: inline-block;
+  margin: 0;
+  padding: var(--nav-element-spacing-vertical) var(--nav-element-spacing-horizontal);
+}
+
+/* Zero-width space keeps the line height in empty list items */
+:where(nav li)::before {
+  float: left;
+  content: "\200b";
+}
+
+nav li :where(a) {
+  display: inline-block;
+  margin: calc(var(--nav-link-spacing) * -1);
+  padding: var(--nav-link-spacing);
+  border-radius: var(--border-radius);
+}
+
+nav li :where(a):not(:hover) {
+  text-decoration: none;
+}
+
+/* Breadcrumb */
+nav[aria-label=breadcrumb] {
+  align-items: center;
+  justify-content: start;
+}
+
+nav[aria-label=breadcrumb] ul li:not(:first-child) {
+  margin-inline-start: var(--nav-link-spacing);
+}
+
+nav[aria-label=breadcrumb] ul li a {
+  margin: calc(var(--nav-link-spacing) * -1) 0;
+  margin-inline-start: calc(var(--nav-link-spacing) * -1);
+}
+
+nav[aria-label=breadcrumb] ul li:not(:last-child)::after {
+  display: inline-block;
+  position: absolute;
+  width: calc(var(--nav-link-spacing) * 4);
+  margin: 0 calc(var(--nav-link-spacing) * -1);
+  content: ">";
+  color: var(--muted);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ---------- Tooltips ---------- */
+
+[data-tooltip] {
+  position: relative;
+}
+
+/* ::before is the text box, ::after the small arrow */
+[data-tooltip]::before,
+[data-tooltip]::after {
+  display: block;
+  z-index: 99;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  padding: 0.25rem 0.5rem;
+  overflow: hidden;
+  transform: translate(-50%, -0.25rem);
+  border-radius: var(--border-radius);
+  background: var(--tooltip-background);
+  content: attr(data-tooltip);
+  color: var(--tooltip-text);
+  font-style: normal;
+  font-weight: var(--font-weight);
+  font-size: 0.875rem;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-tooltip]::after {
+  padding: 0;
+  transform: translate(-50%, 0);
+  border-top: 0.3rem solid;
+  border-right: 0.3rem solid transparent;
+  border-left: 0.3rem solid transparent;
+  border-radius: 0;
+  background-color: transparent;
+  content: "";
+  color: var(--tooltip-background);
+}
+
+[data-tooltip][data-placement=right]::before,
+[data-tooltip][data-placement=right]::after {
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 100%;
+  transform: translate(0.25rem, -50%);
+}
+
+[data-tooltip][data-placement=right]::after {
+  transform: translate(-0.3rem, -50%);
+  border: 0.3rem solid transparent;
+  border-right: 0.3rem solid;
+}
+
+[data-tooltip]:is(:hover, :focus)::before,
+[data-tooltip]:is(:hover, :focus)::after {
+  opacity: 1;
+}
+
+/* With a mouse the tooltip slides in, ending 0.75rem above the element */
+@media (hover: hover) and (pointer: fine) {
+  [data-tooltip]:is(:hover, :focus)::before,
+  [data-tooltip]:is(:hover, :focus)::after {
+    --tooltip-slide-to: translate(-50%, -0.75rem);
+    transform: translate(-50%, 0.75rem);
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+    animation-name: tooltip-slide;
+    opacity: 0;
+  }
+
+  [data-tooltip]:is(:hover, :focus)::after {
+    --tooltip-caret-slide-to: translate(-50%, -0.5rem);
+    transform: translate(-50%, -0.25rem);
+    animation-name: tooltip-caret-slide;
+  }
+
+  [data-tooltip][data-placement=right]:is(:hover, :focus)::before,
+  [data-tooltip][data-placement=right]:is(:hover, :focus)::after {
+    --tooltip-slide-to: translate(0.25rem, -50%);
+    transform: translate(-0.75rem, -50%);
+    animation-name: tooltip-slide;
+  }
+
+  [data-tooltip][data-placement=right]:is(:hover, :focus)::after {
+    --tooltip-caret-slide-to: translate(-0.3rem, -50%);
+    transform: translate(-0.05rem, -50%);
+    animation-name: tooltip-caret-slide;
+  }
+}
+
+@keyframes tooltip-slide {
+  to {
+    transform: var(--tooltip-slide-to);
+    opacity: 1;
+  }
+}
+
+@keyframes tooltip-caret-slide {
+  50% {
+    opacity: 0;
+  }
+  to {
+    transform: var(--tooltip-caret-slide-to);
+    opacity: 1;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    background-attachment: initial !important;
+    animation-duration: 1ms !important;
+    animation-delay: -1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-delay: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
+
+/* ---------- kaellare specific ---------- */
 
 .slim-button {
     max-width: 40%;
@@ -25,13 +854,4 @@ kaellare specific css
 
 .inline-form {
     margin: 0;
-}
-
-/* More space between top tooltips and their element (Pico default is 0.25rem) */
-[data-tooltip]:not([data-placement=bottom], [data-placement=left], [data-placement=right]):is(:hover, :focus)::before {
-    --pico-tooltip-slide-to: translate(-50%, -0.75rem);
-}
-
-[data-tooltip]:not([data-placement=bottom], [data-placement=left], [data-placement=right]):is(:hover, :focus)::after {
-    --pico-tooltip-caret-slide-to: translate(-50%, -0.5rem);
 }
