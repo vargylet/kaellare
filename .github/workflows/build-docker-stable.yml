@@ -1,13 +1,9 @@
-name: Build and publish STABLE docker contaier
+name: Build and publish STABLE docker container
 
 on:
   push:
     tags:
       - "v*.*.*"
-    paths-ignore:
-      - README.md
-      - .gitignore
-      - .github/workflows/**
 
 jobs:
   build-and-publish:
@@ -18,29 +14,23 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-  
+        uses: actions/checkout@v7
+
       - name: Login to ghcr.io
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get tag name
-        id: get_tag
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-      - name: Use the tag name
-        run: echo "The tag is $TAG"
-
       - name: Build and push image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
+          # github.ref_name is the pushed tag, e.g. v1.2.3
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.TAG }}
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ghcr.io/${{ github.repository }}:latest
-        env:
-          TAG: ${{ env.TAG }}
+          # Links the package to this repository on ghcr.io
+          labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
