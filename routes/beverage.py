@@ -2,7 +2,7 @@
 Route for showing pages related to single beverage.
 """
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from utils.db import get_db_connection
+from utils.db import get_db
 from utils.beverage import get_beverage
 from utils.locations import get_all_locations
 
@@ -35,15 +35,14 @@ def add_beverage():
         elif not name:
             flash("Name is required", "error")
         else:
-            conn = get_db_connection()
+            conn = get_db()
             conn.execute(
                 "INSERT INTO beverages (beverageName, beverageLocationId, beverageYear, "
                 "beveragePurchaseDate, beverageDrinkBefore, beverageNotes) "
                 "VALUES (?, ?, ?, ?, ?, ?)",
-			    (name, location, year, purchase_date, drink_before, notes)
+                (name, location, year, purchase_date, drink_before, notes)
             )
             conn.commit()
-            conn.close()
 
             flash(f"{name} has been saved.", "info")
             return redirect(url_for("beverages_bp.index"))
@@ -93,7 +92,7 @@ def edit_beverage(beverage_id):
         elif not name:
             flash("Name if required", "error")
         else:
-            conn = get_db_connection()
+            conn = get_db()
             conn.execute(
                 "UPDATE beverages "
                 "SET beverageLocationId = ?, beverageName = ?, beverageYear = ?, "
@@ -102,7 +101,6 @@ def edit_beverage(beverage_id):
                 (location, name, year, purchase_date, drink_before, notes, beverage_id)
             )
             conn.commit()
-            conn.close()
 
             flash(f"{name} has been updated.", "info")
             return redirect(url_for("beverages_bp.index"))
@@ -123,15 +121,14 @@ def finish_beverage(beverage_id):
     :return: Flashes a message above the HTML dashboard with all beverages.
     :rtype: str
     """
-    conn = get_db_connection()
     beverage = get_beverage(beverage_id)
+    conn = get_db()
     conn.execute("UPDATE beverages "
                  "SET beverageLocationId = 0 "
                  "WHERE beverageId = ?",
                  (beverage_id,)
     )
     conn.commit()
-    conn.close()
 
     flash(f"{beverage['beverageName']} has been marked as finished.", "info")
     return redirect(url_for("beverages_bp.index"))
@@ -148,13 +145,12 @@ def delete_beverage(beverage_id):
     :rtype: str
     """
     beverage = get_beverage(beverage_id)
-    conn = get_db_connection()
+    conn = get_db()
     conn.execute("DELETE FROM beverages "
                  "WHERE beverageId = ?",
                  (beverage_id,)
     )
     conn.commit()
-    conn.close()
 
     flash(f"{beverage['beverageName']} has been deleted.", "info")
     return redirect(url_for("beverages_bp.index"))
