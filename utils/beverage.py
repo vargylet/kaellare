@@ -3,7 +3,7 @@ All functions related to beverages.
 """
 import sqlite3
 from flask import flash, abort
-from utils.db import get_db_connection
+from utils.db import get_db
 
 
 def get_beverage(beverage_id):
@@ -15,8 +15,7 @@ def get_beverage(beverage_id):
     :return: Returns the beverage's data that's relevant for the user.
     :rtype: tuple
     """
-    conn = get_db_connection()
-    beverage = conn.execute(
+    beverage = get_db().execute(
         "SELECT beverageId, beverageName, beverageYear, beveragePurchaseDate, beverageDrinkBefore, "
         "beverageNotes, locationId, locationName "
         "FROM beverages "
@@ -24,7 +23,6 @@ def get_beverage(beverage_id):
         "WHERE beverageId = ?",
         (beverage_id,)
     ).fetchone()
-    conn.close()
     if beverage is None:
         abort(404)
     return beverage
@@ -57,11 +55,7 @@ def get_beverages(finished=None):
     )
 
     try:
-        conn = get_db_connection()
-        try:
-            return conn.execute(sql_query).fetchall()
-        finally:
-            conn.close()
+        return get_db().execute(sql_query).fetchall()
     except sqlite3.Error as db_error:
         flash(f"A database error occurred. Beverages couldn't be loaded. {str(db_error)}", "error")
         return []

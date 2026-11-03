@@ -10,6 +10,7 @@ from init_db import init_db, DATABASE_DIR
 from routes.beverages import beverages_bp
 from routes.beverage import beverage_bp
 from routes.locations import locations_bp
+from utils.db import close_db
 
 # Stored next to the database so it survives container restarts
 SECRET_KEY_FILE_PATH = os.path.join(DATABASE_DIR, "secret_key")
@@ -57,6 +58,9 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 # Every POST request must carry the form's csrf_token
 csrf = CSRFProtect(app)
+
+# Closes the request's database connection when the request ends, even on errors
+app.teardown_appcontext(close_db)
 
 app.register_blueprint(beverages_bp, url_prefix='/beverages')
 app.register_blueprint(beverage_bp, url_prefix='/beverage')
